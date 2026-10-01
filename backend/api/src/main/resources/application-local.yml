@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/threem_api
+    username: threem
+    password: threem
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: threem
+    password: threem

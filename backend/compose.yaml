@@ -1,0 +1,58 @@
+# 로컬 개발용 인프라. 서비스마다 DB를 따로 둔다.
+name: threem
+
+services:
+  postgres-api:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_USER: threem
+      POSTGRES_PASSWORD: threem
+      POSTGRES_DB: threem_api
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-api-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U threem -d threem_api"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  postgres-chat:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_USER: threem
+      POSTGRES_PASSWORD: threem
+      POSTGRES_DB: threem_chat
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres-chat-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U threem -d threem_chat"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  rabbitmq:
+    image: rabbitmq:4-management-alpine
+    # RabbitMQ는 호스트명으로 데이터 디렉터리를 구분하므로 고정한다.
+    hostname: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: threem
+      RABBITMQ_DEFAULT_PASS: threem
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres-api-data:
+  postgres-chat-data:
+  rabbitmq-data:
