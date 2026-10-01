@@ -52,7 +52,7 @@ public class JwtProvider {
         return accessTokenTtl;
     }
 
-    static SecretKey secretKey(AuthProperties authProperties) {
+    public static SecretKey secretKey(AuthProperties authProperties) {
         return new SecretKeySpec(authProperties.jwtSecret().getBytes(StandardCharsets.UTF_8), "HmacSHA256");
     }
 }

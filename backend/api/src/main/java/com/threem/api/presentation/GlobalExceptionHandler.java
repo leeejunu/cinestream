@@ -28,14 +28,14 @@ public class GlobalExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(BusinessException.class)
-    ResponseEntity<ErrorResponse> handleBusiness(BusinessException e) {
+    public ResponseEntity<ErrorResponse> handleBusiness(BusinessException e) {
         ErrorCode errorCode = e.getErrorCode();
         return ResponseEntity.status(toStatus(errorCode.type()))
                 .body(new ErrorResponse(errorCode.code(), e.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    ResponseEntity<ErrorResponse> handleInvalidArgument(MethodArgumentNotValidException e) {
+    public ResponseEntity<ErrorResponse> handleInvalidArgument(MethodArgumentNotValidException e) {
         String message = e.getBindingResult().getFieldErrors().stream()
                 .findFirst()
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
@@ -45,27 +45,27 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    ResponseEntity<ErrorResponse> handleUnreadable(HttpMessageNotReadableException e) {
+    public ResponseEntity<ErrorResponse> handleUnreadable(HttpMessageNotReadableException e) {
         return error(CommonErrorCode.INVALID_INPUT);
     }
 
     @ExceptionHandler(AuthenticationException.class)
-    ResponseEntity<ErrorResponse> handleAuthentication(AuthenticationException e) {
+    public ResponseEntity<ErrorResponse> handleAuthentication(AuthenticationException e) {
         return error(CommonErrorCode.UNAUTHORIZED);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    ResponseEntity<ErrorResponse> handleAccessDenied(AccessDeniedException e) {
+    public ResponseEntity<ErrorResponse> handleAccessDenied(AccessDeniedException e) {
         return error(CommonErrorCode.FORBIDDEN);
     }
 
     @ExceptionHandler({NoResourceFoundException.class, HttpRequestMethodNotSupportedException.class})
-    ResponseEntity<ErrorResponse> handleNotFound(Exception e) {
+    public ResponseEntity<ErrorResponse> handleNotFound(Exception e) {
         return error(CommonErrorCode.NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)
-    ResponseEntity<ErrorResponse> handleUnexpected(Exception e) {
+    public ResponseEntity<ErrorResponse> handleUnexpected(Exception e) {
         log.error("처리하지 못한 예외", e);
         return error(CommonErrorCode.INTERNAL_ERROR);
     }

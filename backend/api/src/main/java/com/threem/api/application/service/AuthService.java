@@ -126,7 +126,7 @@ public class AuthService implements AuthUseCase {
     public LoginResult refresh(RefreshTokenCommand command) {
         Instant now = Instant.now(clock);
         RefreshToken token = refreshTokenRepository
-                .findByTokenHashForUpdate(OpaqueTokens.hash(command.refreshToken()))
+                .findByTokenHashForUpdate(RefreshToken.hash(command.refreshToken()))
                 .orElseThrow(() -> new BusinessException(UserErrorCode.INVALID_REFRESH_TOKEN));
         if (token.isUsed()) {
             refreshTokenRepository.revokeAllByUserId(token.getUser().getId(), now);
@@ -144,7 +144,7 @@ public class AuthService implements AuthUseCase {
             return;
         }
         Instant now = Instant.now(clock);
-        refreshTokenRepository.findByTokenHashForUpdate(OpaqueTokens.hash(command.refreshToken()))
+        refreshTokenRepository.findByTokenHashForUpdate(RefreshToken.hash(command.refreshToken()))
                 .ifPresent(token -> {
                     token.revoke(now);
                     refreshTokenRepository.save(token);

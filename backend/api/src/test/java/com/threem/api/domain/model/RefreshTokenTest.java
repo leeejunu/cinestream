@@ -27,6 +27,15 @@ class RefreshTokenTest {
     }
 
     @Test
+    @DisplayName("원문 토큰은 매번 다르고, 해시는 같은 원문이면 항상 같다")
+    void generateAndHash() {
+        String token = RefreshToken.generate();
+
+        assertThat(RefreshToken.generate()).isNotEqualTo(token);
+        assertThat(RefreshToken.hash(token)).isEqualTo(RefreshToken.hash(token)).hasSize(64).isNotEqualTo(token);
+    }
+
+    @Test
     @DisplayName("한 번 쓴 토큰은 다시 쓸 수 없다")
     void useOnce() {
         RefreshToken token = RefreshToken.issue(USER, "hash", NOW);

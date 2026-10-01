@@ -17,7 +17,7 @@ public interface UserRepository {
     Optional<User> findByProvider(AuthProvider provider, String providerId);
 
     /**
-     * @throws com.threem.api.global.error.BusinessException 이메일이 이미 있으면 {@code EMAIL_ALREADY_EXISTS}
+     * @throws com.threem.api.global.error.BusinessException 같은 이메일이 이미 있으면 {@code EMAIL_ALREADY_EXISTS}
      */
     User save(User user);
 }

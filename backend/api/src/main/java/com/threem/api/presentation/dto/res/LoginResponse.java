@@ -12,7 +12,7 @@ public record LoginResponse(String accessToken, long expiresIn, UserSummary user
 
     public record UserSummary(Long id, String nickname, String role) {
 
-        static UserSummary from(User user) {
+        public static UserSummary from(User user) {
             return new UserSummary(user.getId(), user.getNickname(), user.getRole().name());
         }
     }

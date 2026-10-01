@@ -35,12 +35,12 @@ class AuthController {
     private final RefreshTokenCookies refreshTokenCookies;
 
     @PostMapping("/signup")
-    ResponseEntity<LoginResponse> signUp(@Valid @RequestBody SignUpRequest request) {
+    public ResponseEntity<LoginResponse> signUp(@Valid @RequestBody SignUpRequest request) {
         return loggedIn(HttpStatus.CREATED, authUseCase.signUp(request.toCommand()));
     }
 
     @PostMapping("/login")
-    ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
         return loggedIn(HttpStatus.OK, authUseCase.login(request.toCommand()));
     }
 

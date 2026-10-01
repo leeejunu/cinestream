@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 class ClockConfig {
 
     @Bean
-    Clock clock() {
+    public Clock clock() {
         return Clock.systemUTC();
     }
 }

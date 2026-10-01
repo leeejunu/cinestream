@@ -64,7 +64,7 @@ class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
      *
      * @param errorCode 성공이면 null
      */
-    static void redirectToFrontend(HttpServletRequest request, HttpServletResponse response,
+    public static void redirectToFrontend(HttpServletRequest request, HttpServletResponse response,
             String frontendUrl, String errorCode) throws IOException {
         HttpSession session = request.getSession(false);
         if (session != null) {

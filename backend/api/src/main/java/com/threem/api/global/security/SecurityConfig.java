@@ -46,7 +46,7 @@ class SecurityConfig {
      * 핸들러는 생성자가 아니라 여기서 받는다. 핸들러 → AuthService → PasswordEncoder(이 클래스) 순환을 피한다.
      */
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http, SecurityErrorHandler securityErrorHandler,
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, SecurityErrorHandler securityErrorHandler,
             OAuth2LoginSuccessHandler oauth2LoginSuccessHandler) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
@@ -83,12 +83,12 @@ class SecurityConfig {
     }
 
     @Bean
-    PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    JwtDecoder jwtDecoder() {
+    public JwtDecoder jwtDecoder() {
         NimbusJwtDecoder decoder = NimbusJwtDecoder.withSecretKey(JwtProvider.secretKey(authProperties))
                 .macAlgorithm(MacAlgorithm.HS256)
                 .build();
@@ -100,7 +100,7 @@ class SecurityConfig {
      * 프론트엔드만 허용한다. Refresh Token 쿠키를 주고받으므로 credentials를 허용한다.
      */
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of(authProperties.frontendUrl()));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));

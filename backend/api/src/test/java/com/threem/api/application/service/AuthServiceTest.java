@@ -169,8 +169,8 @@ class AuthServiceTest {
     @DisplayName("Refresh Token으로 재발급하면 이전 토큰은 사용 처리된다")
     void refresh() {
         User user = localUser();
-        RefreshToken token = RefreshToken.issue(user, OpaqueTokens.hash("raw-token"), NOW.minusSeconds(60));
-        given(refreshTokenRepository.findByTokenHashForUpdate(OpaqueTokens.hash("raw-token")))
+        RefreshToken token = RefreshToken.issue(user, RefreshToken.hash("raw-token"), NOW.minusSeconds(60));
+        given(refreshTokenRepository.findByTokenHashForUpdate(RefreshToken.hash("raw-token")))
                 .willReturn(Optional.of(token));
         given(loginTokenIssuer.issue(user, NOW)).willReturn(loginResult(user));
 
@@ -183,9 +183,9 @@ class AuthServiceTest {
     @DisplayName("이미 쓴 Refresh Token이 다시 오면 그 회원의 Refresh Token을 모두 폐기한다")
     void refreshReuseRevokesAll() {
         User user = localUser();
-        RefreshToken token = RefreshToken.issue(user, OpaqueTokens.hash("raw-token"), NOW.minusSeconds(60));
+        RefreshToken token = RefreshToken.issue(user, RefreshToken.hash("raw-token"), NOW.minusSeconds(60));
         token.use(NOW.minusSeconds(30));
-        given(refreshTokenRepository.findByTokenHashForUpdate(OpaqueTokens.hash("raw-token")))
+        given(refreshTokenRepository.findByTokenHashForUpdate(RefreshToken.hash("raw-token")))
                 .willReturn(Optional.of(token));
 
         assertThatThrownBy(() -> authService.refresh(new RefreshTokenCommand("raw-token")))
@@ -206,8 +206,8 @@ class AuthServiceTest {
     @Test
     @DisplayName("로그아웃하면 Refresh Token을 폐기한다")
     void logout() {
-        RefreshToken token = RefreshToken.issue(localUser(), OpaqueTokens.hash("raw-token"), NOW.minusSeconds(60));
-        given(refreshTokenRepository.findByTokenHashForUpdate(OpaqueTokens.hash("raw-token")))
+        RefreshToken token = RefreshToken.issue(localUser(), RefreshToken.hash("raw-token"), NOW.minusSeconds(60));
+        given(refreshTokenRepository.findByTokenHashForUpdate(RefreshToken.hash("raw-token")))
                 .willReturn(Optional.of(token));
 
         authService.logout(new LogoutCommand("raw-token"));

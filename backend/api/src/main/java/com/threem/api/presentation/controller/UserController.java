@@ -22,7 +22,7 @@ class UserController {
      * Access Token의 {@code sub}가 회원 ID다.
      */
     @GetMapping("/me")
-    MyInfoResponse me(@AuthenticationPrincipal Jwt jwt) {
+    public MyInfoResponse me(@AuthenticationPrincipal Jwt jwt) {
         return MyInfoResponse.from(userUseCase.getMyInfo(Long.valueOf(jwt.getSubject())));
     }
 }

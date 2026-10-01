@@ -22,10 +22,10 @@ class LoginTokenIssuer {
     private final JwtProvider jwtProvider;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    LoginResult issue(User user, Instant now) {
+    public LoginResult issue(User user, Instant now) {
         String accessToken = jwtProvider.createAccessToken(user.getId(), user.getRole().name(), now);
-        String refreshToken = OpaqueTokens.generate();
-        refreshTokenRepository.save(RefreshToken.issue(user, OpaqueTokens.hash(refreshToken), now));
+        String refreshToken = RefreshToken.generate();
+        refreshTokenRepository.save(RefreshToken.issue(user, RefreshToken.hash(refreshToken), now));
         return new LoginResult(accessToken, jwtProvider.accessTokenTtl(), refreshToken, RefreshToken.TTL, user);
     }
 }

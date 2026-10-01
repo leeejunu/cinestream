@@ -1,7 +1,13 @@
 package com.threem.api.domain.model;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Base64;
+import java.util.HexFormat;
 
 import com.threem.api.domain.error.UserErrorCode;
 import com.threem.api.global.error.BusinessException;
@@ -30,6 +36,9 @@ import lombok.NoArgsConstructor;
 public class RefreshToken {
 
     public static final Duration TTL = Duration.ofDays(14);
+
+    private static final SecureRandom RANDOM = new SecureRandom();
+    private static final int TOKEN_BYTES = 32;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,6 +70,27 @@ public class RefreshToken {
 
     public static RefreshToken issue(User user, String tokenHash, Instant now) {
         return new RefreshToken(user, tokenHash, now);
+    }
+
+    /**
+     * 클라이언트에 줄 원문 토큰. 32바이트 난수다.
+     */
+    public static String generate() {
+        byte[] bytes = new byte[TOKEN_BYTES];
+        RANDOM.nextBytes(bytes);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+    }
+
+    /**
+     * DB에 저장하고 조회할 때 쓰는 SHA-256 해시. 원문이 충분히 긴 난수라 솔트 없이 빠른 해시로 충분하다.
+     */
+    public static String hash(String token) {
+        try {
+            byte[] digest = MessageDigest.getInstance("SHA-256").digest(token.getBytes(StandardCharsets.UTF_8));
+            return HexFormat.of().formatHex(digest);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     /**
