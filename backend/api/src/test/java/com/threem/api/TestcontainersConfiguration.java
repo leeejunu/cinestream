@@ -11,7 +11,7 @@ import org.testcontainers.utility.DockerImageName;
  * ../compose.yaml과 같은 이미지를 쓴다.
  */
 @TestConfiguration(proxyBeanMethods = false)
-class TestcontainersConfiguration {
+public class TestcontainersConfiguration {
 
     @Bean
     @ServiceConnection
