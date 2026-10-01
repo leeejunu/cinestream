@@ -5,6 +5,11 @@
 - `backend/` — 백엔드 서비스. `backend/CLAUDE.md` 참고
 - `frontend/` — 프론트엔드
 
+## 브랜치
+
+- `main`: 배포용. 직접 커밋하지 않는다.
+- `dev`: 개발 브랜치. 작업은 `dev`에서 하고, 배포할 때 `main`으로 머지한다.
+
 ## 커밋 메시지
 
 [Conventional Commits](https://www.conventionalcommits.org/) 형식을 따른다.
