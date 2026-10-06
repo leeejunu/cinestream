@@ -1,4 +1,7 @@
 spring:
+  config:
+    # 로컬 비밀값은 api/.env.local에 둔다(gitignore). 형식은 .env.local.example 참고.
+    import: optional:file:.env.local[.properties]
   datasource:
     url: jdbc:postgresql://localhost:5433/threem_api
     username: threem
@@ -8,7 +11,7 @@ spring:
       client:
         registration:
           google:
-            # 실제 Google 로그인을 해 보려면 GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET 환경 변수를 넣는다.
+            # 실제 Google 로그인을 해 보려면 .env.local(또는 환경 변수)에 GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET을 넣는다.
             client-id: ${GOOGLE_CLIENT_ID:local-dummy}
             client-secret: ${GOOGLE_CLIENT_SECRET:local-dummy}
   rabbitmq:

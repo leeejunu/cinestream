@@ -13,7 +13,7 @@
 | transcoder | FFmpeg로 원본 → HLS 변환 | `transcoder/CLAUDE.md` |
 
 - 프론트엔드: `../frontend`
-- 로컬 인프라(PostgreSQL, RabbitMQ): `compose.yaml` — `backend/`에서 `docker compose up -d`
+- 로컬 인프라(PostgreSQL, RabbitMQ, MinIO): `compose.yaml` — `backend/`에서 `docker compose up -d`
 
 ## 서비스 간 규칙
 

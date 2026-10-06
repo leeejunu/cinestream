@@ -36,6 +36,26 @@ services:
       timeout: 5s
       retries: 10
 
+  # S3 호환 스토리지. 운영은 S3를 쓴다. 콘솔: http://localhost:9001
+  minio:
+    # 공식 minio/minio 이미지는 Docker Hub에서 받을 수 없어서 MinIO를 이어 빌드하는 pgsty/minio를 쓴다.
+    image: pgsty/minio:RELEASE.2026-08-04T00-00-00Z
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: threem
+      MINIO_ROOT_PASSWORD: threem1234
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
 volumes:
   postgres-api-data:
   rabbitmq-data:
+  minio-data:
