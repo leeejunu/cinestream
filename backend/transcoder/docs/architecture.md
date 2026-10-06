@@ -34,7 +34,7 @@ com.threem.transcoder
     └── adapter/
         ├── in/messaging/        # TranscodeRequestListener
         ├── out/ffmpeg/          # FfprobeAdapter, FfmpegHlsEncoder
-        ├── out/storage/         # LocalStorageAdapter, S3StorageAdapter
+        ├── out/storage/         # S3StorageAdapter (로컬은 MinIO)
         └── out/messaging/       # TranscodeResultPublisher
 ```
 
@@ -77,7 +77,8 @@ com.threem.transcoder
 
 ### adapter/out/storage, adapter/out/messaging
 
-- storage: 로컬 파일시스템 구현과 S3 구현을 두고 프로필로 고른다.
+- storage: AWS SDK S3 구현 하나만 둔다. 로컬은 MinIO(S3 호환), 운영은 S3를 쓰고
+  엔드포인트·자격 증명 같은 설정값만 프로필별로 다르다.
 - messaging: `RabbitTemplate`으로 결과를 발행한다. 메시지 DTO는 이 패키지에 둔다.
 
 ## 메시지 계약 (api)

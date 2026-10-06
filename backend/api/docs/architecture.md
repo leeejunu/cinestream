@@ -38,7 +38,7 @@ com.threem.api
 ├── infrastructure/           # 바깥 시스템 연동
 │   ├── persistence/{대상}/   # XxxJpaRepository + XxxRepositoryAdapter
 │   ├── messaging/            # (예정) transcoder 요청 발행, 결과 수신
-│   └── storage/              # (예정) 로컬·S3 스토리지
+│   └── storage/              # (예정) S3 스토리지 (로컬은 MinIO)
 ├── presentation/
 │   ├── controller/           # REST 컨트롤러
 │   ├── dto/req, dto/res      # 요청·응답 DTO
@@ -78,7 +78,8 @@ com.threem.api
   목록 조회는 fetch join이나 DTO projection으로 N+1을 피한다.
 - **messaging**(예정): `RabbitTemplate`으로 발행하고 `@RabbitListener`로 받는다. 메시지 DTO는 이 패키지에 둔다.
   DB 변경과 발행이 같이 일어나면 트랜잭션 커밋 후에 발행한다. 같은 결과 메시지가 두 번 와도 안전해야 한다.
-- **storage**(예정): 로컬 파일시스템 구현과 S3 구현을 두고 프로필로 고른다.
+- **storage**(예정): AWS SDK S3 구현 하나만 둔다. 로컬은 MinIO(S3 호환), 운영은 S3를 쓰고
+  엔드포인트·자격 증명 같은 설정값만 프로필별로 다르다.
 
 ### presentation
 
