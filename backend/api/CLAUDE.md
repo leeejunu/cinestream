@@ -16,6 +16,12 @@
 ./gradlew test --tests "*.FilmServiceTest"
 ```
 
+## 설정·프로필
+
+- `local`(기본): `application-local.yml`. 비밀값은 `api/.env.local`에서 읽는다 (`.env.local.example` 참고).
+- `prod`: `application-prod.yml`. DB 접속 정보와 비밀값은 환경 변수나 `api/.env.prod`로 넣는다 (`.env.prod.example` 참고).
+- `.env.*`는 커밋하지 않는다. `.env` 파일은 실행한 디렉터리 기준이므로 `api/`에서 실행한다.
+
 ## 도메인 규칙
 
 ### 회원·인증

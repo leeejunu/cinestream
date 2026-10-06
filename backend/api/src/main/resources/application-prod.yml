@@ -1,0 +1,8 @@
+spring:
+  config:
+    # 운영 비밀값은 배포 환경의 환경 변수나 api/.env.prod(gitignore)로 넣는다. 형식은 .env.prod.example 참고.
+    import: optional:file:.env.prod[.properties]
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
